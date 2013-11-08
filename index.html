@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>File API - FileReader (readAsDataURL) - jsFiddle demo</title>
+  
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  
+  
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+    
+      <link rel="stylesheet" type="text/css" href="http://fancyapps.com/fancybox/source/jquery.fancybox.css">
+    
+    
+  
+    
+    
+      <script type='text/javascript' src="https://raw.github.com/fancyapps/fancyBox/master/source/jquery.fancybox.js"></script>
+    
+  
+  <style type='text/css'>
+    @import url(http://fonts.googleapis.com/css?family=The+Girl+Next+Door);
+
+header h1{
+    font-size:12pt;
+    color: #fff;
+    background-color: #1BA1E2;
+    padding: 20px;
+
+}
+
+
+ @font-face {
+
+     font-family:'Raleway';
+
+     src: url('fonts/Raleway-Light.otf');
+
+ }
+
+ @font-face {
+
+     font-family:'Raleway-Bold';
+
+     src: url('fonts/Raleway-Bold.otf');
+
+ }
+
+ @font-face {
+
+     font-family:'BlackJack';
+
+     src: url('fonts/black_jack.ttf');
+
+ }
+
+ @font-face {
+
+     font-family:'Kaushan';
+
+     src: url('fonts/KaushanScript-Regular.otf');
+
+ }
+
+ body {
+
+     background:url('angelablur.png');
+
+     background-attachment:fixed;
+     
+     background-size: 100%;
+
+     background-repeat:no-repeat;
+
+     margin:50px 0px;
+
+     padding:0px;
+
+     text-align:center;
+
+ }
+
+ /***POLAROID SECTION'***/
+
+ figure, figcaption {
+
+     /*add any other html5 elements you use*/
+
+     display:inline;
+
+     opacity:1;
+   
+    
+
+ }
+
+ /***Now style the containing div that we gave the id 'polaroid'***/
+
+ #polaroid {
+
+     padding:5px 5px;
+
+     /*setting a width and adding overflow:hidden will clear the floats we're going to apply to figure*/
+
+     width:auto;
+
+     overflow:hidden;
+
+ }
+
+ figure:hover {
+
+     opacity:1.0;
+
+ }
+
+ /***Position the figures containing the images and captions***/
+
+ #polaroid figure {
+
+     float:left;
+
+     /*places the images in a horizontal line*/
+
+     /*allows precise positioning of the tape in step 5- see support section below for more info*/
+
+     width:250px;
+
+     /width of the images*/
+
+     /*space between the images*/
+    
+    
+
+ }
+
+
+ #polaroid textarea {
+
+     text-align: center;
+
+     font-family: 'Raleway';
+
+     font-size: 18px;
+    
+     color: white;
+
+     letter-spacing: 0.09em;
+     
+     overflow: hidden;
+
+     -moz-appearance: textfield-multiline;
+
+     -webkit-appearance: textarea;
+
+     border: 0px;
+
+     resize: none;
+
+     outline: none;
+
+     text-align: left;
+
+     background-color:  transparent;
+
+     width: 250px;
+     
+     height: 100px;
+    
+    border-radius: 5px;
+    
+      -webkit-transform:rotate(-1deg);
+
+     -moz-transform: rotate(-1deg);
+
+     -o-transform: rotate(-1deg);
+
+     -ms-transform: rotate(-1deg);
+
+     transform: rotate(-1deg);
+
+     -webkit-backface-visibility:hidden;
+    
+    -webkit-transform:rotate(2deg);
+
+     -moz-transform: rotate(2deg);
+
+     -o-transform: rotate(2deg);
+
+     -ms-transform: rotate(2deg);
+
+     transform: rotate(2deg);
+
+ }
+
+img {
+    
+ border-radius: 5px;  
+    -webkit-transform:rotate(-1deg);
+
+     -moz-transform: rotate(-1deg);
+
+     -o-transform: rotate(-1deg);
+
+     -ms-transform: rotate(-1deg);
+
+     transform: rotate(-1deg);
+
+     -webkit-backface-visibility:hidden;
+    
+    -webkit-transform:rotate(2deg);
+
+     -moz-transform: rotate(2deg);
+
+     -o-transform: rotate(2deg);
+
+     -ms-transform: rotate(2deg);
+
+     transform: rotate(2deg);
+
+ 
+    
+}
+
+
+  </style>
+  
+</head>
+<body>
+  <input id="files" type="file" multiple/>
+<output id="result" />
+
+    
+<div id="polaroid">
+    <figure><a class="fancybox" title="iPhone 5c" href="http://a.abcnews.com/images/Technology/iphone_5c_release_16x9_992.jpg">
+        <img src="http://bit.ly/1985MkH" width="250" height="200" alt="" /></a> 
+        <textarea>Designer - 
+Price -</textarea>
+        
+    </figure>
+</div>    
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+
+window.onload = function(){
+        
+    //Check File API support
+    if(window.File && window.FileList && window.FileReader)
+    {
+        var filesInput = document.getElementById("files");
+        
+        filesInput.addEventListener("change", function(event){
+            
+            var files = event.target.files; //FileList object
+            var output = document.getElementById("result");
+            
+            for(var i = 0; i< files.length; i++)
+            {
+                var file = files[i];
+                
+                //Only pics
+                if(!file.type.match('image'))
+                  continue;
+                
+                var picReader = new FileReader();
+                
+                picReader.addEventListener("load",function(event){
+                    
+                    var picFile = event.target;
+                    
+                    var div = document.createElement("div");
+                    
+                    div.innerHTML = "<div id='polaroid'><figure><a class='fancybox'><img src='" + picFile.result + "' width='250' height='200' alt='' /></a></figure></div>";
+                    
+                    output.insertBefore(div,null);            
+                
+                });
+                
+                 //Read the image
+                picReader.readAsDataURL(file);
+            }                               
+           
+        });
+    }
+    else
+    {
+        console.log("Your browser does not support File API");
+    }
+}
+
+//]]>  
+
+</script>
+
+
+</body>
+
+
+</html>
+
